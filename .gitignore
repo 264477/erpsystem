@@ -1,0 +1,6 @@
+# Project exclude paths
+/erp-common/target/
+/erp-domain/target/
+/erp-mapper/target/
+/erp-service/target/
+/erp-web/target/

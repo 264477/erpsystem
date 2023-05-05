@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hnguigu.erp.mapper.TblMenuMapper">
+    <resultMap id="BaseResultMap" type="com.hnguigu.erp.entity.TblMenu">
+        <id column="uuid" property="uuid" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="url" property="url" jdbcType="VARCHAR"/>
+        <result column="puuid" property="puuid" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" suffix=")" prefixOverrides="and">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach collection="criterion.value" item="listItem" open="(" close=")"
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+        uuid
+        , name, url, puuid
+    </sql>
+    <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.hnguigu.erp.entity.TblMenuExample">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from tbl_menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from tbl_menu
+        where uuid = #{uuid,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+        delete
+        from tbl_menu
+        where uuid = #{uuid,jdbcType=BIGINT}
+    </delete>
+    <delete id="deleteByExample" parameterType="com.hnguigu.erp.entity.TblMenuExample">
+        delete from tbl_menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.hnguigu.erp.entity.TblMenu">
+        insert into tbl_menu (uuid, name, url,
+                              puuid)
+        values (#{uuid,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+                #{puuid,jdbcType=BIGINT})
+    </insert>
+    <insert id="insertSelective" parameterType="com.hnguigu.erp.entity.TblMenu">
+        insert into tbl_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">
+                uuid,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="url != null">
+                url,
+            </if>
+            <if test="puuid != null">
+                puuid,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uuid != null">
+                #{uuid,jdbcType=BIGINT},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="puuid != null">
+                #{puuid,jdbcType=BIGINT},
+            </if>
+        </trim>
+    </insert>
+    <insert id="addMenu" parameterType="com.hnguigu.erp.dto.MenuDTO">
+        INSERT INTO tbl_menu VALUES(null,#{name},null,#{ppuid})
+    </insert>
+    <insert id="addRoleMenu">
+        insert into tbl_role_menu values (null,#{id},#{uuid})
+    </insert>
+
+    <select id="countByExample" parameterType="com.hnguigu.erp.entity.TblMenuExample" resultType="java.lang.Integer">
+        select count(*) from tbl_menu
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update tbl_menu
+        <set>
+            <if test="record.uuid != null">
+                uuid = #{record.uuid,jdbcType=BIGINT},
+            </if>
+            <if test="record.name != null">
+                name = #{record.name,jdbcType=VARCHAR},
+            </if>
+            <if test="record.url != null">
+                url = #{record.url,jdbcType=VARCHAR},
+            </if>
+            <if test="record.puuid != null">
+                puuid = #{record.puuid,jdbcType=BIGINT},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update tbl_menu
+        set uuid = #{record.uuid,jdbcType=BIGINT},
+        name = #{record.name,jdbcType=VARCHAR},
+        url = #{record.url,jdbcType=VARCHAR},
+        puuid = #{record.puuid,jdbcType=BIGINT}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.hnguigu.erp.entity.TblMenu">
+        update tbl_menu
+        <set>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="url != null">
+                url = #{url,jdbcType=VARCHAR},
+            </if>
+            <if test="puuid != null">
+                puuid = #{puuid,jdbcType=BIGINT},
+            </if>
+        </set>
+        where uuid = #{uuid,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.hnguigu.erp.entity.TblMenu">
+        update tbl_menu
+        set name  = #{name,jdbcType=VARCHAR},
+            url   = #{url,jdbcType=VARCHAR},
+            puuid = #{puuid,jdbcType=BIGINT}
+        where uuid = #{uuid,jdbcType=BIGINT}
+    </update>
+
+    <select id="findMenuByRoleId" resultMap="BaseResultMap">
+        SELECT tm.uuid, tm.name, tm.url, tm.puuid
+        FROM tbl_menu tm
+                 LEFT JOIN tbl_role_menu trm ON tm.uuid = trm.menuUuid
+        WHERE trm.roleUuid = #{id}
+    </select>
+    <select id="findMenuByEmpUserName" resultMap="BaseResultMap">
+        SELECT tm.uuid,
+               tm.name,
+               tm.url,
+               tm.puuid
+        FROM tbl_role tr
+                 LEFT JOIN tbl_emp_role ter ON tr.uuid = ter.roleUuid
+                 LEFT JOIN tbl_emp te ON ter.empUuid = te.uuid
+                 LEFT JOIN tbl_role_menu trm ON tr.uuid = trm.roleUuid
+                 LEFT JOIN tbl_menu tm ON trm.menuUuid = tm.uuid
+        WHERE te.userName = #{userName}
+    </select>
+
+    <select id="findMenuAll" resultType="com.hnguigu.erp.vo.TblMenuVo">
+        SELECT DISTINCT
+        mu.uuid,mu.name,mu.url,tm.name puuid
+        from tbl_emp ep
+        LEFT JOIN tbl_emp_role re ON ep.uuid=re.empUuid
+        left JOIN tbl_role le on re.roleUuid = le.uuid
+        left JOIN tbl_role_menu me on le.uuid = me.roleuuid
+        left JOIN tbl_menu mu on me.menuUuid = mu.uuid
+        LEFT JOIN tbl_menu tm on mu.puuid=tm.uuid
+        <where>
+            <if test="name!='' and name!=null">
+                mu.name like concat('%',#{name},'%')
+            </if>
+            <if test="puuid!=null and puuid!=10000">
+                and mu.puuid=#{puuid}
+            </if>
+        </where>
+    </select>
+
+    <select id="findMenuByNameZiName" resultType="com.hnguigu.erp.vo.TblMenuVo">
+        SELECT *
+        from tbl_menu tm
+                 LEFT JOIN tbl_menu me on tm.uuid = me.puuid
+        WHERE me.puuid = #{puuid}
+    </select>
+    <select id="findByMenu" resultType="com.hnguigu.erp.vo.TblMenuVo">
+        SELECT *
+        from tbl_menu
+        where puuid = 1;
+    </select>
+    <select id="findall" resultType="com.hnguigu.erp.entity.TblMenu">
+        SELECT *
+        from tbl_menu
+        where puuid = 1;
+    </select>
+    <select id="findByPuuid" resultMap="BaseResultMap">
+        select *
+        from tbl_menu
+        where puuid = #{puuid}
+    </select>
+    <select id="findByRole" resultType="com.hnguigu.erp.entity.TblRole">
+        select * from tbl_role;
+    </select>
+</mapper>
